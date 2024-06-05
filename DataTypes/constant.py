@@ -37,8 +37,67 @@ class Constants():
     def get_value(self) -> int:
         return self.value * (10**self.order_of_magnitude)
 
+    # Output formatting
     def __repr__(self) -> str:
         return str(self.value)+"e"+str(self.order_of_magnitude)
     
     def __str__(self) -> str:
         return str(self.value)+"e"+str(self.order_of_magnitude)
+    
+    # Conversion to other types
+    def __float__(self):
+        return self.get_value()
+    
+    def __int__(self):
+        return int(self.get_value())
+
+    def __bool__(self):
+        return (self.value != 0 or self.order_of_magnitude != 0)
+
+    # Comparisions
+
+    # special functions
+
+    # arithmatic operations
+    def __add__(self,other):
+        number = self.get_value()
+        return number + other
+    def __radd__(self,other):
+        number = self.get_value()
+        return number + other
+
+    def __sub__(self,other):
+        number = self.get_value()
+        return number - other
+    def __rsub__(self,other):
+        number = self.get_value()
+        return number - other
+
+    def __divmod__(self,other):
+        number = self.get_value()
+        return divmod(number, other)
+    def __rdivmod__(self,other):
+        number = self.get_value()
+        return divmod(other, number)
+    def __truediv__(self,other):
+        number = self.get_value()
+        return number / other
+    def __rtruediv__(self,other):
+        number = self.get_value()
+        return other / number
+
+
+    def __floordiv__(self,other):
+        number = self.get_value()
+        return number / other
+    def __rfloordiv__(self,other):
+        number = self.get_value()
+        return other / number
+
+
+    def __mul__(self,other):
+        number = self.get_value()
+        return number * other
+    def __rmul__(self,other):
+        number = self.get_value()
+        return number * other
