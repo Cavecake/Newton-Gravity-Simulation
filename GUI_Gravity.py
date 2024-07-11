@@ -1,4 +1,9 @@
 import pyglet
+import os
+import sys
+
+os.chdir(os.path.dirname(__file__))
+
 from DataTypes.LeapFrog import LeapFrog_Gravity_Sim
 from DataTypes.gravitational_object import MassObject
 import Tests
@@ -14,6 +19,7 @@ class GUI():
             on_mouse_scroll=self.on_mouse_scroll,
             on_mouse_drag=self.on_mouse_drag
         )
+        self.predict = True
         self.calc_init_pixel_size(width, height, self.sim.get_body_positions())
         pyglet.clock.schedule_interval(self.update, 1/60)  # Update at 60Hz
 
@@ -44,8 +50,17 @@ class GUI():
         for pos in positions:
             x, y = pos
             x, y = self.calc_screen_coords(x, y)
-            obj = pyglet.shapes.Circle(x, y, 2, color=(0, 0, 0), batch=batch)
+            obj = pyglet.shapes.Circle(x, y, 5, color=(0, 0, 0), batch=batch)
             objects.append(obj)
+
+        if self.predict:
+            positions = self.sim.predict(1000, 1)
+            for body in positions:
+                body = [[int((x // self.pixel_size) + self.screen_center[0]),
+                         int((y // self.pixel_size) + self.screen_center[1])]
+                          for x, y in body]
+                obj = pyglet.shapes.MultiLine(*body, color=(100,100,100), batch=batch)
+                objects.append(obj)
 
         pyglet.gl.glClearColor(1, 1, 1, 1.0)  # RGB values between 0 and 1
         self.window.clear()
@@ -75,19 +90,21 @@ class GUI():
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         self.move(dx, dy)
 
-STEP_SIZE = 0.01
+STEP_SIZE = 1
 W = 400
 H = 600
 
 bodies = [
-    {"m": 2, "r": 2, "v": [1, 2], "pos": [1, 2]}
+    {"m": 1.898e30, "r": 2, "v": [0, 0], "pos": [0, 0]},
+    {"m": 5.9772e24, "r": 2, "v": [29.78, 0], "pos": [0, 149600000000]}
+
 ]
 
 mass_bodies = []
 for body in bodies:
     mass_bodies.append(MassObject(body["m"], body["r"], body["v"], body["pos"]))
 
-sim = Tests.simulation()  # LeapFrog_Gravity_Sim(mass_bodies, STEP_SIZE)
+sim = LeapFrog_Gravity_Sim(mass_bodies, STEP_SIZE)
 
 gui = GUI(W, H, sim)
 
