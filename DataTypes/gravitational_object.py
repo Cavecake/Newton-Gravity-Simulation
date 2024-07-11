@@ -1,27 +1,39 @@
 import numpy as np
-import GravityFormulars
+import DataTypes.GravityFormulars as GravityFormulars
 import math
 
 class MassObject():
     def __init__(self, mass, radius, velocity, position) -> None:
         self.check_vector(position)
         self.check_vector(position)
-        if not isinstance(mass,[int,float]):
+        if not isinstance(mass,(int,float)):
             raise TypeError("Mass must be a number")
-        if not isinstance(radius,[int,float]):
+        if not isinstance(radius,(int,float)):
             raise TypeError("Radius must be a number")
         
-        self.mass = np.array(mass)
-        self.radius = np.array(radius)
-        self.velocity = np.array(velocity)
-        self.position = np.array(position)
+        self.mass = mass
+        self.radius = radius
+        self.velocity = np.array(velocity,dtype=np.float64)
+        self.position = np.array(position,dtype=np.float64)
+
+    def get_mass(self):
+        return self.mass
+    
+    def get_radius(self):
+        return self.radius
+    
+    def get_velocity(self):
+        return self.velocity
+    
+    def get_position(self):
+        return self.position
 
     def check_vector(self,input_data):
-        if not isinstance(input_data,[list,np.array]):
+        if not isinstance(input_data,(list,np.ndarray)):
             raise TypeError("Velocity must be a Vector (list of ints)")
         
         for elem in input_data:
-            if not isinstance(elem,[int,float]):
+            if not isinstance(elem,(int,float)):
                 raise TypeError("Velocity must be a Vector (list of ints)")
 
     def set_velocity(self,new_velocity):
@@ -29,7 +41,7 @@ class MassObject():
         self.velocity = new_velocity
 
     def set_mass(self,new_mass):
-        if not isinstance(new_mass,[int,float]):
+        if not isinstance(new_mass,(int,float)):
             raise TypeError("Mass must be a number")
         self.mass = new_mass
 
@@ -38,7 +50,7 @@ class MassObject():
         self.position = new_position
 
     def set_radius(self,new_radius):
-        if not isinstance(new_radius,[int,float]):
+        if not isinstance(new_radius,(int,float)):
             raise TypeError("Radius must be a number")
         self.radius = new_radius
 
