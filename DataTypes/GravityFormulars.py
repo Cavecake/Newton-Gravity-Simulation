@@ -7,38 +7,39 @@ G = Constants(6.67259,0.00085,-11)
 C = 299792458
 
 def check_is_vector(vector):
-    if not isinstance(vector,[list,np.array]):
+    if not isinstance(vector,(list,np.array)):
         raise TypeError("Velocity must be a Vector (list of ints)")
     
     for elem in vector:
-        if not isinstance(elem,[int,float]):
+        if not isinstance(elem,(int,float)):
             raise TypeError("Velocity must be a Vector (list of ints)")
+def normalize(v):
+    return np.array(v / np.sqrt(np.sum(v**2)), dtype=np.float64)
 
-def calc_force(mass1, mass2, distance):
-    if not isinstance(mass1, [int,float]):
+def calc_force(mass1, mass2, distance, direction_vector):
+    if not isinstance(mass1, (int,float)):
         raise TypeError("Mass must be a number")
-    if not isinstance(mass2, [int,float]):
+    if not isinstance(mass2, (int,float)):
         raise TypeError("Mass must be a number")
-    if not isinstance(distance, [int,float]):
+    if not isinstance(distance, (int,float)):
         raise TypeError("Distance must be a number")
     force = G * (mass1 * mass2)/(distance * distance)
-    return force
+    
+    return force * normalize(direction_vector)
 
 def calc_acceleration(force, mass):
-    if not isinstance(force, [int,float]):
-        raise TypeError("Force must be a number")
-    if not isinstance(mass, [int,float]):
+    if not isinstance(mass, (int,float)):
         raise TypeError("Mass must be a number")
     acceleration = force / mass
     return acceleration
 
 def calc_distance(point1, point2):
-    return distance(point1, point2)
+    return distance.euclidean(point1, point2)
 
 def check_collision(point1, point2, radius1, radius2):
-    if not isinstance(radius1, [int,float]):
+    if not isinstance(radius1, (int,float)):
         raise TypeError("Radius must be a number")
-    if not isinstance(radius2, [int,float]):
+    if not isinstance(radius2, (int,float)):
         raise TypeError("Radius must be a number")
     
     check_is_vector(point1)
