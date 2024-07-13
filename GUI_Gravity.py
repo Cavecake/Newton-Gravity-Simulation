@@ -90,13 +90,13 @@ class GUI():
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         self.move(dx, dy)
 
-STEP_SIZE = 1
+STEP_SIZE = 86000
 W = 400
 H = 600
 
 bodies = [
     {"m": 1.898e30, "r": 2, "v": [0, 0], "pos": [0, 0]},
-    {"m": 5.9772e24, "r": 2, "v": [29.78, 0], "pos": [0, 149600000000]}
+    {"m": 5.9772e24, "r": 2, "v": [29780, 0], "pos": [0, 149600000000]}
 
 ]
 
